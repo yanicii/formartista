@@ -1,0 +1,32 @@
+#text-box-1 {
+  border: 0;
+  padding: 0;
+  height: 450px;
+  width: 450px;
+  text-align: justify;
+  font-size: 1px;
+  opacity: 0;
+}
+
+#text-box-2 {
+  border: 0;
+  padding: 0;
+  height: auto;
+  width: fit-content;
+  text-align: justify;
+  opacity: 0;
+}
+
+.container {
+  display: flex;
+  flex-direction: row;
+}
+
+#heart-space {
+  width: 645px;
+  height: 585px;
+}
+
+#shape_svg {
+    opacity: 0;
+}
