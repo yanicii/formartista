@@ -9,11 +9,14 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from "@angular/material/form-field";
 import { MatInputModule } from '@angular/material/input';
+import { MatSelectModule } from '@angular/material/select';
+import { GeneratorConfigComponent } from './pages/generator/generator-config/generator-config.component';
 
 @NgModule({
   declarations: [
     AppComponent,
-    GeneratorComponent
+    GeneratorComponent,
+    GeneratorConfigComponent
   ],
   imports: [
     BrowserModule,
@@ -24,6 +27,7 @@ import { MatInputModule } from '@angular/material/input';
     MatFormFieldModule,
     MatButtonModule,
     MatInputModule,
+    MatSelectModule,
   ],
   providers: [],
   bootstrap: [AppComponent]

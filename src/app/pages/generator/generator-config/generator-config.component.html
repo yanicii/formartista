@@ -1,0 +1,24 @@
+<form [formGroup]="generatorSearchForm" (submit)="onSubmit()">
+    <mat-form-field>
+        <mat-label>Text</mat-label>
+        <textarea matInput formControlName="text"></textarea>
+      </mat-form-field>
+      <mat-form-field>
+        <mat-label>Font</mat-label>
+        <mat-select formControlName="font">
+          <mat-option *ngFor="let font of fonts" [value]="font">
+            {{font}}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+      <mat-form-field>
+        <mat-label>Shape</mat-label>
+        <mat-select formControlName="shape">
+          <mat-option *ngFor="let shape of shapes" [value]="shape">
+            {{shape}}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+      <button mat-flat-button type="submit" color="primary">Draw</button>
+</form>
+<button mat-flat-button color="primary" (click)="onDownload()">Download</button>

@@ -1,3 +1,12 @@
+.generator-container {
+  font: initial;
+  line-height: initial;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  width: 100%;
+}
+
 #text-box-1 {
   border: 0;
   padding: 0;
@@ -5,7 +14,6 @@
   width: 450px;
   text-align: justify;
   font-size: 1px;
-  opacity: 0;
 }
 
 #text-box-2 {
@@ -14,7 +22,6 @@
   height: auto;
   width: fit-content;
   text-align: justify;
-  opacity: 0;
 }
 
 .container {
@@ -22,11 +29,12 @@
   flex-direction: row;
 }
 
-#heart-space {
+#formartista-space {
   width: 645px;
   height: 585px;
+  position: relative;
 }
 
 #shape_svg {
-    opacity: 0;
+  opacity: 0;
 }

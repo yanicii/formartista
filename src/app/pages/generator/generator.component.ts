@@ -1,11 +1,13 @@
-import { AfterViewInit, Component } from '@angular/core';
+import { Component } from '@angular/core';
+import domtoimage from 'dom-to-image';
+import { GeneratorOptions } from 'src/app/model/generator-options.model';
 
 @Component({
-  selector: 'app-generator',
+  selector: 'generator',
   templateUrl: './generator.component.html',
   styleUrls: ['./generator.component.scss'],
 })
-export class GeneratorComponent implements AfterViewInit {
+export class GeneratorComponent {
 
   private FONT_SIZE_STEPS = 0.1;
   private PIXEL_ACCURACY = 1;
@@ -16,13 +18,32 @@ export class GeneratorComponent implements AfterViewInit {
   private INITIAL_AREA_MULTIPLIER = 1;
   private SIZE_FACTOR = 1;
 
-  ngAfterViewInit(): void {
+  font = "";
+  text = "";
+  shape = "";
+
+  draw(generatorOptions: GeneratorOptions) {
+    console.log('Draw', generatorOptions);
+    this.removeAllRows();
+    this.font = generatorOptions.font;
+    this.text = generatorOptions.text.replace(/\n/g, ' ').replace('<br>', ' ').trim();
+    this.shape = generatorOptions.shape;
     const startDate = Date.now();
     const heightAndWidth = this.getHeightAndWidthOfSvg();
     const fontSize = this.calculateInitialFontSize();
-    console.log(`InitialFontSize: ${fontSize}`);
     this.drawShape(fontSize, heightAndWidth);
     console.log(`Filling SVG took ${Date.now() - startDate} ms`);
+  }
+
+  downloadFile() {
+    const shape = this.shape;
+    domtoimage.toSvg(document.getElementById('formartista-space')!!, { quality: 0.95 })
+    .then(function (dataUrl) {
+        var link = document.createElement('a');
+        link.download = `${shape}-${new Date().getTime()}.svg`;
+        link.href = dataUrl;
+        link.click();
+    });
   }
 
   private calculateAreaOfPolygon(points: any) {
@@ -46,14 +67,16 @@ export class GeneratorComponent implements AfterViewInit {
     const numSteps = Math.floor(pathLen * 2);
     const points = [];
     for (let i = 0; i < numSteps; i++) {
-      const p = pathElem.getPointAtLength((i * pathLen) / numSteps);
-      points.push(p);
+      const point = pathElem.getPointAtLength((i * pathLen) / numSteps);
+      points.push(point);
     }
     return points;
   }
 
   private calculateInitialFontSize() {
     const textBox = document.getElementById(this.TEXT_BOX_1_ID)!!;
+    textBox.innerHTML = this.text;
+    textBox.style.fontFamily = this.font;
     const area = this.calculateAreaOfPolygon(
       this.convertPathToPolygon(this.SVG_PATH_ID)
     );
@@ -71,6 +94,7 @@ export class GeneratorComponent implements AfterViewInit {
         fontSize = fontSize - this.FONT_SIZE_STEPS;
       }
     }
+    console.log(`InitialFontSize: ${fontSize}`);
     return fontSize;
   }
 
@@ -132,13 +156,14 @@ export class GeneratorComponent implements AfterViewInit {
     div.style.left = `${row.x * this.SIZE_FACTOR}px`;
     div.style.width = `${row.width * this.SIZE_FACTOR}px`;
     div.style.fontSize = `${fontSize * this.SIZE_FACTOR}px`;
+    div.style.fontFamily = this.font;
     div.style.textAlign = text.split(' ').length > 1 ? 'justify' : 'center';
     div.classList = ['shape-row'];
     div.innerText = text;
     const subDiv = document.createElement('div') as any;
     subDiv.classList = ['spacer'];
     div.appendChild(subDiv);
-    document.body.append(div);
+    document.getElementById("formartista-space")!!.append(div);
   }
 
   private removeAllRows() {
@@ -149,17 +174,14 @@ export class GeneratorComponent implements AfterViewInit {
 
   private fillRows(textRows: any[], fontSize: number) {
     const textBox2 = document.getElementById(this.TEXT_BOX_2_ID) as any;
-    let textSnippets = document
-      .getElementById(this.TEXT_BOX_1_ID)!!
-      .innerText.split(' ')
-      .filter((snippet) => !!snippet);
+    let textSnippets = this.text.split(' ').filter((snippet) => !!snippet);
     for (let row of textRows) {
       let currentText = '';
       let currentWidth = 0;
       let textFits = true;
       while (textFits) {
         const newSnippet = textSnippets[0];
-        textBox2.innerText = 'x' + newSnippet;
+        textBox2.innerHTML = 'X' + newSnippet;
         currentWidth = currentWidth + textBox2.offsetWidth;
         textFits = currentWidth < row.width;
         if (textFits && textSnippets.length > 0) {
@@ -178,6 +200,7 @@ export class GeneratorComponent implements AfterViewInit {
   }
 
   private drawShape(initialFontSize: number, heightAndWidth: any) {
+    console.log('Draw shape', initialFontSize, heightAndWidth);
     let textFits = false;
     let fontSize = initialFontSize;
     do {
@@ -189,7 +212,6 @@ export class GeneratorComponent implements AfterViewInit {
       );
       const missingWords = this.fillRows(textRows, fontSize).length;
       textFits = missingWords === 0;
-      console.log(missingWords, fontSize);
       if (!textFits) {
         fontSize = fontSize - this.FONT_SIZE_STEPS;
         this.removeAllRows();

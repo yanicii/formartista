@@ -5,17 +5,13 @@ import { GeneratorComponent } from './pages/generator/generator.component';
 const routes: Routes = [
   {
     path: '',
-    redirectTo: '/generator',
-    pathMatch: 'full',
-  },
-  {
-    path: 'generator',
     component: GeneratorComponent,
+    pathMatch: 'full',
   },
 ];
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
-  exports: [RouterModule]
+  exports: [RouterModule],
 })
-export class AppRoutingModule { }
+export class AppRoutingModule {}
