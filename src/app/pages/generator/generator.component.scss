@@ -14,6 +14,7 @@
   width: 450px;
   text-align: justify;
   font-size: 1px;
+  opacity: 0;
 }
 
 #text-box-2 {
@@ -22,6 +23,7 @@
   height: auto;
   width: fit-content;
   text-align: justify;
+  opacity: 0;
 }
 
 .container {
@@ -30,8 +32,8 @@
 }
 
 #formartista-space {
-  width: 645px;
-  height: 585px;
+  width: (645 * 4)px;
+  height: (585 * 4)px;
   position: relative;
 }
 

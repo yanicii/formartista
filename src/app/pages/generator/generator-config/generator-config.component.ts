@@ -31,7 +31,8 @@ export class GeneratorConfigComponent {
     this.generatorSearchForm = this.formBuilder.group({
       font: ['Arial', Validators.required],
       shape: ['Heart', Validators.required],
-      text: ['', Validators.required],
+      text: ['', [Validators.required, Validators.minLength(1500)]],
+      sizeFactor: [1, Validators.required]
     });
   }
   
