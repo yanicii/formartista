@@ -66,9 +66,12 @@ MIT
 @angular/router
 MIT
 
-dom-to-image
+dom-to-image-more
 MIT
 The MIT License (MIT)
+
+Copyright 2018 Marc Brooks
+https://about.me/idisposable
 
 Copyright 2015 Anatolii Saienko
 https://github.com/tsayen
